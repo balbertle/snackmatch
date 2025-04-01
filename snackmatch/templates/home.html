@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - SnackMatch{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1>Welcome to SnackMatch</h1>
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}!</p>
+        <p>You are successfully logged in.</p>
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'signup' %}">sign up</a> to continue.</p>
+    {% endif %}
+</div>
+{% endblock %} 

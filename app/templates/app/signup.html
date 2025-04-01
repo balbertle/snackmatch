@@ -1,0 +1,32 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Sign Up - SnackMatch{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-block">
+        <form method="post">
+            {% csrf_token %}
+            <h2>Sign-Up</h2>
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ field|title }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password1" placeholder="Password">
+            <input type="password" name="password2" placeholder="Confirm Password">
+            <p>What is your favorite colour?</p>
+            <input type="text" name="security_answer" placeholder="Security Answer" required>
+            <button type="submit">Register</button>
+            <a href="/login"><button type="button">Already have an account?</button></a>
+        </form>
+    </div>
+</div>
+{% endblock %} 
