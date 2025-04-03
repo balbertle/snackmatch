@@ -27,4 +27,5 @@ urlpatterns = [
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('password-reset-question/', views.password_reset_question, name='password_reset_question'),
     path('password-reset-form/', views.password_reset_form, name='password_reset_form'),
+    path('nearby/', views.nearby_places, name='nearby_places'),
 ]

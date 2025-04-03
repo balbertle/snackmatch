@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Nearby Places - SnackMatch{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Nearby Open Places</h2>
+    
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    {% endif %}
+    
+    {% if places %}
+        <div class="row">
+            {% for place in places %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ place.name }}</h5>
+                            <p class="card-text">
+                                <i class="fas fa-star text-warning"></i> {{ place.rating }} ({{ place.user_ratings_total }} reviews)
+                            </p>
+                            {% if place.details.formatted_phone_number %}
+                                <p class="card-text">
+                                    <i class="fas fa-phone"></i> {{ place.details.formatted_phone_number }}
+                                </p>
+                            {% endif %}
+                            {% if place.details.website %}
+                                <a href="{{ place.details.website }}" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-globe"></i> Visit Website
+                                </a>
+                            {% endif %}
+                            <a href="https://www.google.com/maps/place/?q=place_id:{{ place.place_id }}" 
+                               target="_blank" 
+                               class="btn btn-outline-primary">
+                                <i class="fas fa-directions"></i> Get Directions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            No open places found nearby. Try adjusting your search radius or location.
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %} 

@@ -1,0 +1,43 @@
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    height: 200px;
+    object-fit: cover;
+}
+
+.btn {
+    margin: 5px;
+}
+
+.place-card {
+    margin-bottom: 1.5rem;
+}
+
+.rating {
+    color: #ffc107;
+}
+
+.location-icon {
+    color: #dc3545;
+}
+
+.phone-icon {
+    color: #28a745;
+}
+
+.website-icon {
+    color: #17a2b8;
+}
+
+.directions-icon {
+    color: #6c757d;
+} 

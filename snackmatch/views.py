@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import User
+from django.conf import settings
+import googlemaps
+from datetime import datetime
 
 def signup(request):
     if request.method == 'POST':
@@ -114,3 +117,79 @@ def password_reset_form(request):
 @login_required
 def home(request):
     return render(request, 'home.html')
+
+@login_required
+def nearby_places(request):
+    try:
+        gmaps = googlemaps.Client(key=settings.GOOGLE_MAPS_API_KEY)
+    except Exception as e:
+        return render(request, 'nearby_places.html', {
+            'error': 'Failed to initialize Google Maps client. Please check your API key configuration.',
+            'places': []
+        })
+    
+    location = (33.7756, -84.3963)
+    
+    try:
+        places_result = gmaps.places_nearby(
+            location=location,
+            radius=5000,  # 5km radius
+            type='restaurant',
+            open_now=True
+        )
+        
+        if not places_result or 'results' not in places_result:
+            return render(request, 'nearby_places.html', {
+                'error': 'No places found in the specified area. Try increasing the search radius.',
+                'places': []
+            })
+        
+        places = places_result.get('results', [])
+                
+        if not places:
+            return render(request, 'nearby_places.html', {
+                'error': 'No open restaurants found nearby. Try adjusting your search radius or location.',
+                'places': []
+            })
+        
+        for place in places:
+            place_id = place.get('place_id')
+            if place_id:
+                try:
+                    # Request all relevant fields including opening hours
+                    details = gmaps.place(place_id, fields=[
+                        'formatted_phone_number',
+                        'formatted_address',
+                        'rating',
+                        'user_ratings_total',
+                    ])
+                    place['details'] = details.get('result', {})
+
+                except Exception as e:
+                    place['details'] = {}
+        
+        return render(request, 'nearby_places.html', {
+            'places': places,
+            'location': location
+        })
+        
+    except googlemaps.exceptions.ApiError as e:
+        error_message = 'Google Places API error: '
+        if 'INVALID_REQUEST' in str(e):
+            error_message += 'Invalid request parameters.'
+        elif 'REQUEST_DENIED' in str(e):
+            error_message += 'Request denied.'
+        elif 'OVER_QUERY_LIMIT' in str(e):
+            error_message += 'Query limit exceeded.'
+        else:
+            error_message += str(e)
+            
+        return render(request, 'nearby_places.html', {
+            'error': error_message,
+            'places': []
+        })
+    except Exception as e:
+        return render(request, 'nearby_places.html', {
+            'error': f'An unexpected error occurred: {str(e)}',
+            'places': []
+        })

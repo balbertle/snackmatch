@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nearby Places - SnackMatch{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="{% static 'snackmatch/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Nearby Open Places</h2>
+    
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    {% endif %}
+    
+    {% if places %}
+        <div class="row">
+            {% for place in places %}
+                <div class="col-md-6 col-lg-4 place-card">
+                    <div class="card h-100">
+                        {% if place.photos %}
+                            <img src="{{ place.photos.0.photo_reference|default:'/static/snackmatch/default-place.jpg' }}" 
+                                 class="card-img-top" 
+                                 alt="{{ place.name }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ place.name }}</h5>
+                            <p class="card-text">
+                                <i class="fas fa-star rating icon"></i> {{ place.rating }} ({{ place.user_ratings_total }} reviews)
+                            </p>
+                            <p class="card-text">
+                                <i class="fas fa-map-marker-alt location-icon icon"></i> {{ place.vicinity }}
+                            </p>
+                            {% if place.details.formatted_hours %}
+                                <div class="card-text">
+                                    <i class="fas fa-clock time-icon icon"></i>
+                                    <div class="hours-list">
+                                        {% for day in place.details.formatted_hours %}
+                                            <div class="day-hours">{{ day }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if place.details.formatted_phone_number %}
+                                <p class="card-text">
+                                    <i class="fas fa-phone phone-icon icon"></i> {{ place.details.formatted_phone_number }}
+                                </p>
+                            {% endif %}
+                            {% if place.details.website %}
+                                <a href="{{ place.details.website }}" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-globe website-icon icon"></i> Visit Website
+                                </a>
+                            {% endif %}
+                            <a href="https://www.google.com/maps/place/?q=place_id:{{ place.place_id }}" 
+                               target="_blank" 
+                               class="btn btn-outline-primary">
+                                <i class="fas fa-directions directions-icon icon"></i> Get Directions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            No open places found nearby. Try adjusting your search radius or location.
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .hours-list {
+        margin-left: 1.5rem;
+        font-size: 0.9rem;
+    }
+    .day-hours {
+        margin-bottom: 0.25rem;
+    }
+    .time-icon {
+        color: #6c757d;
+    }
+</style>
+{% endblock %} 
