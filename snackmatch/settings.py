@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'snackmatch/static/snackmatch/css/',
+    os.path.join(BASE_DIR, 'snackmatch/static'),
 ]
 
 # Default primary key field type
