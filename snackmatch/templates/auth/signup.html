@@ -3,29 +3,56 @@
 {% block title %}Sign Up - SnackMatch{% endblock %}
 
 {% block content %}
-<div class="form-container">
-    <div class="form-block">
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-lg" style="width: 400px;">
+        <h2 class="text-center mb-3">Sign Up</h2>
+
         <form method="post">
             {% csrf_token %}
-            <h2>Sign-Up</h2>
+            
             {% if form.errors %}
                 <div class="alert alert-danger">
-                    <ul>
+                    <ul class="mb-0">
                         {% for field, errors in form.errors.items %}
                             {% for error in errors %}
-                                <li>{{ field|title }}: {{ error }}</li>
+                                <li><strong>{{ field|title }}</strong>: {{ error }}</li>
                             {% endfor %}
                         {% endfor %}
                     </ul>
                 </div>
             {% endif %}
-            <input type="text" name="username" placeholder="Username">
-            <input type="password" name="password1" placeholder="Password">
-            <input type="password" name="password2" placeholder="Confirm Password">
-            <p>What is your favorite colour?</p>
-            <input type="text" name="security_answer" placeholder="Security Answer" required>
-            <button type="submit">Register</button>
-            <a href="/login"><button type="button">Already have an account?</button></a>
+
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password1" class="form-label">Password</label>
+                <input type="password" name="password1" id="password1" class="form-control" placeholder="Enter password" required>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+                <label for="password2" class="form-label">Confirm Password</label>
+                <input type="password" name="password2" id="password2" class="form-control" placeholder="Confirm password" required>
+            </div>
+
+            <!-- Security Question -->
+            <div class="mb-3">
+                <label for="security_answer" class="form-label">What is your favorite colour?</label>
+                <input type="text" name="security_answer" id="security_answer" class="form-control" placeholder="Security answer" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+
+            <!-- Login Redirect -->
+            <div class="text-center mt-3">
+                <a href="/login" class="btn btn-outline-secondary w-100">Already have an account? Log in</a>
+            </div>
         </form>
     </div>
 </div>
