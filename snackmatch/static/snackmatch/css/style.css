@@ -3,10 +3,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-image: url("../images/OTE_5.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat;
+    background-image: url("../images/OTE_5.png") repeat cover center;
 }
 
 .container {
