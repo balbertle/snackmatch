@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'app/static/',
+    BASE_DIR / 'snackmatch/static/snackmatch/css/',
 ]
 
 # Default primary key field type
